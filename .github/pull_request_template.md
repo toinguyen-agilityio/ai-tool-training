@@ -18,4 +18,5 @@
 - [ ] Commits follow Conventional Commits
 - [ ] Content is in English
 - [ ] No secrets or personal data committed
+- [ ] No "Generated with Claude Code" footer in the description
 - [ ] `README.md` / `CLAUDE.md` updated if needed

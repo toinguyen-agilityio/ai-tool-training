@@ -25,6 +25,10 @@ Fill in [`.github/pull_request_template.md`](../../.github/pull_request_template
 
 Write the title and description in English.
 
+Do not add a tool signature or footer to the description, such as
+`🤖 Generated with [Claude Code](https://claude.com/claude-code)` or a
+session link. Remove it if your tooling adds one.
+
 ## After opening
 
 - Give the user the full PR link and offer to watch it (CI, review comments).
