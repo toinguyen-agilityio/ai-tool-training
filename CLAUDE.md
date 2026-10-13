@@ -10,6 +10,7 @@ published artifacts, and small exercises, organized by training day.
 
 - `README.md`: index of the training days. Each day has a `## Day N — <Topic>`
   section with a bullet per deliverable (link + one-line description).
+- `docs/conventions/`: branch, commit, and pull request conventions.
 - `.github/pull_request_template.md`: PR body layout. Always fill it in.
 
 There is no build, test, or lint tooling yet. If you add code, add the command to
@@ -21,69 +22,27 @@ run it to this file.
   messages, PR titles and descriptions.
 - Chat with the user in whatever language they use.
 
-## Branches
+## Git and GitHub conventions
 
-- Never commit directly to `main`. All changes land through a PR.
-- Name branches `<type>/<short-kebab-description>`, using the commit types below.
-  Examples: `docs/day1-claude-101`, `feat/quiz-artifact`, `chore/init-claude-md`.
-- If the session/harness assigns a branch name (e.g. `claude/...`), use that one.
-- One topic per branch. Start from the latest `main`
-  (`git fetch origin main && git checkout -b <branch> origin/main`).
-- If a branch's PR is already merged, do not stack new work on it: start a new
-  branch from the latest `main`.
+Read the matching file before you create a branch, commit, or open a PR, and
+follow it exactly:
 
-## Commits
+| Topic         | File                                                               |
+| ------------- | ------------------------------------------------------------------ |
+| Branches      | [docs/conventions/branch.md](docs/conventions/branch.md)             |
+| Commits       | [docs/conventions/commit.md](docs/conventions/commit.md)             |
+| Pull requests | [docs/conventions/pull-request.md](docs/conventions/pull-request.md) |
 
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-<type>(<optional scope>): <imperative summary, ≤ 72 chars, no trailing period>
-
-<optional body: what changed and why, wrapped at 72 chars>
-```
-
-Allowed types:
-
-| Type       | Use for                                           |
-| ---------- | ------------------------------------------------- |
-| `docs`     | Notes, README, training content                   |
-| `feat`     | New exercise, tool, script, or artifact           |
-| `fix`      | Correcting wrong content, broken links, bugs      |
-| `refactor` | Restructuring without changing content/behavior   |
-| `chore`    | Repo config, templates, agent instructions        |
-| `test`     | Adding or fixing tests                            |
-
-Rules:
-- Imperative mood: "Add Day 2 notes", not "Added" / "Adds".
-- Small, focused commits: one logical change each.
-- Never commit secrets, tokens, `.env` files, or personal data.
-- Never rewrite history that is already pushed to a shared branch
-  (no force-push, rebase, or amend on someone else's branch).
-
-Examples:
-```
-docs(day2): add Claude Code basics notes
-fix(readme): correct Claude 101 artifact link
-chore: add CLAUDE.md and PR template
-```
-
-## Pull requests
-
-- Create a PR only when the user asks for it.
-- Target `main`.
-- Title: same format as a commit subject (`<type>(<scope>): <summary>`).
-- Body: use `.github/pull_request_template.md`: Summary, Changes, How to
-  review, Checklist.
-- Keep PRs small and single-purpose. Split unrelated changes.
-- After opening a PR, give the user the full link and offer to watch it
-  (CI, review comments).
-- Address review comments with new commits on the same branch, then reply on
-  the thread.
-- Do not merge your own PR. The user reviews and merges.
+Key rules at a glance:
+- Never commit directly to `main`; every change goes through a PR.
+- Branch: `<type>/<short-kebab-description>`.
+- Commit and PR title: `<type>(<scope>): <imperative summary>`.
+- Open a PR only when the user asks, and never merge your own PR.
 
 ## Adding training content
 
 When adding notes for a new day:
 1. Add a `## Day N — <Topic>` section to `README.md`, in chronological order.
 2. One bullet per deliverable: `- [Title](link): what it covers.`
-3. Branch `docs/dayN-<topic>`, commit `docs(dayN): ...`, PR to `main`.
+3. Branch `docs/dayN-<topic>`, commit `docs(dayN): ...`, PR to `main`
+   (see the conventions above).
