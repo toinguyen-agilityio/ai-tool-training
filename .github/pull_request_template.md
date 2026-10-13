@@ -1,10 +1,10 @@
 ## Summary
 
-<!-- What does this PR do and why? 1–3 sentences. -->
+<!-- Why is this change needed? The problem or goal, 1–3 sentences. -->
 
 ## Changes
 
-<!-- Bullet list of the notable changes. -->
+<!-- What changed, summarized in a few short bullets. No implementation details. -->
 
 -
 
