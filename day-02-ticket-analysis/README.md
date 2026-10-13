@@ -22,9 +22,15 @@ Why closed tickets: they come with an answer key (code, tests, QA reports), so y
 | [#3](https://github.com/toinguyen-agilityio/super-board/issues/3) | ✨ editor: customise colours, font and background | [issue-03.md](issue-03.md) | To do |
 | [#4](https://github.com/toinguyen-agilityio/super-board/issues/4) | ✨ editor: full-screen preview + PNG download | [issue-04.md](issue-04.md) | Started: 2 findings |
 
+## Bugs found
+
+| Bug | From | Status |
+|---|---|---|
+| [🐛 download: PNG file name drops non-Latin names](bug-filename-non-latin.md) | #4, Q1 | Reproduced, not filed yet |
+
 ## Next (Day 2 remaining)
 
 - [ ] Compare my own list with Claude's for each ticket
 - [ ] Step 3: check each vague point against the code and QA reports
-- [ ] Pick one bug, write a bug ticket in super-board's format (`docs/agents/issue-tracker.md`)
+- [x] Pick one bug, write a bug ticket in super-board's format (`docs/agents/issue-tracker.md`)
 - [ ] Add a failing test for it (fix comes on Day 3)

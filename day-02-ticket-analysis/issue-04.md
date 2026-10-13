@@ -24,5 +24,5 @@ Get the PO to settle questions 1, 3 and 5 first, because they change the test as
 
 ## Findings so far (step 3, checked against the repo)
 
-- **Q1 is a real bug candidate:** `lib/download.ts` keeps only `[A-Za-z0-9-]` after stripping diacritics, so bride `李华` + groom `Trần Văn Đức` gives `thiep-cuoi--Tran-Van-Duc.png` (bride's name lost). Verified by running the slug logic in Node.
+- **Q1 is a real bug candidate:** `lib/download.ts` keeps only `[A-Za-z0-9-]` after stripping diacritics, so bride `李华` + groom `Trần Văn Đức` gives `thiep-cuoi--Tran-Van-Duc.png` (bride's name lost). Verified by running the slug logic in Node. Full write-up: [bug-filename-non-latin.md](bug-filename-non-latin.md).
 - **Q3 caused a rebuild:** the ticket has the label `loop:rebuild-1`, and the first QA run has `docs/super-board/runs/issue-4-qa-v1/ac3-fail-transparent-on-dark.png`, so the first build exported a transparent background and failed AC3.
