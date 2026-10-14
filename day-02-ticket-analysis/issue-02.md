@@ -33,4 +33,4 @@ Checked every acceptance criterion on `staging` @ `7a5094a` with `npm run dev` a
 | Lời mời capped at 300 with a counter | ❌ counts UTF-16 units: each emoji uses 2, decomposed Vietnamese up to 2 per letter; 150 emoji already show `Còn 0 ký tự` |
 | Side by side at ≥ 1024 px, stacked at 375 px | ✅ switches at 1024 px |
 
-Bug filed: [#15 🐛 editor: Lời mời counter counts each emoji as 2 characters](https://github.com/toinguyen-agilityio/super-board/issues/15). This is vague question 4 above showing up as a real bug.
+Bug filed: [#15 🐛 editor: message counter counts each emoji as 2 characters](https://github.com/toinguyen-agilityio/super-board/issues/15). This is vague question 4 above showing up as a real bug.
