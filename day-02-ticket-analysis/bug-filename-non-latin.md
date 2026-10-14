@@ -1,79 +1,56 @@
 # 🐛 [bug] download: PNG file name drops non-Latin names
 
-Bug found while analysing [super-board #4](https://github.com/toinguyen-agilityio/super-board/issues/4) (vague point Q1 in [issue-04.md](issue-04.md)). Written in super-board's ticket format (`docs/agents/issue-tracker.md`).
+Bug found while analysing [super-board #4](https://github.com/toinguyen-agilityio/super-board/issues/4) (vague point Q1 in [issue-04.md](issue-04.md)), then reproduced in the running app (`npm run dev`, Chromium) by clicking through the UI. Written in super-board's ticket format (`docs/agents/issue-tracker.md`).
 
-**Filed as:** https://github.com/toinguyen-agilityio/super-board/issues/11
+**Ticket:** https://github.com/toinguyen-agilityio/super-board/issues/11
 
 ## Problem
-When the bride's or groom's name has no Latin letters (Chinese, Korean, emoji…), the downloaded PNG loses that name: the file is called `thiep-cuoi--Tran-Van-Duc.png`. Guests and couples cannot tell whose invitation the file is, and a name made only of emoji gives `thiep-cuoi--.png`.
+When the bride's or groom's name has no Latin letters (Chinese, Korean, emoji…), "Tải về" saves the PNG without that name. The preview shows `李华 & Trần Văn Đức`, but the file is called `thiep-cuoi--Tran-Van-Duc.png`, so the couple and their guests cannot tell whose invitation it is.
 
 ## Context
 - **Where:** editor, `/tao?mau=co-dien`, "Tải về" button
-  - a. Open `/tao?mau=co-dien`
-  - b. Tên cô dâu: `李华`
-  - c. Tên chú rể: `Trần Văn Đức`
-  - d. Fill in Ngày giờ and Địa điểm with any valid value
-  - e. Click "Tải về"
-- **Expected:** the file name keeps the bride's name in some form, e.g. `thiep-cuoi-李华-Tran-Van-Duc.png`
-- **Actual:** the file is saved as `thiep-cuoi--Tran-Van-Duc.png` (note the double `-`)
-- **Who:** a couple where at least one partner has a non-Latin name (mixed-nationality weddings)
-- **Env:** `staging` @ `b2071a8` (same `lib/` and `app/` as `main` @ `4469d6c`), any browser
+- **Who:** a couple where at least one partner has a non-Latin name (e.g. mixed-nationality weddings)
+- **Env:** `staging` @ `b2071a8`, `npm run dev` on `http://localhost:3000`, Chromium, desktop 1280×900
+- **How it was found:** reproduced in the running app on 14/10/2026 by clicking through the UI, not by reading code
 
-## Root cause
-`lib/download.ts` line 10, inside `slug()`:
+![editor with 李华 · desktop](evidence/issue-11-lihua-editor.png)
 
-```ts
-.map((word) => word.replace(/[^A-Za-z0-9-]/g, ""))
-```
+## Reproduce steps
+1. Open `http://localhost:3000/`
+2. Click the "Cổ điển" template card; the URL becomes `/tao?mau=co-dien`
+3. Tên cô dâu: `李华`
+4. Tên chú rể: `Trần Văn Đức`
+5. Ngày giờ: `20/12/2026 18:00`
+6. Địa điểm: `Nhà hàng Hoa Sen, Đà Nẵng`
+7. Check the preview: it shows `李华 & Trần Văn Đức` correctly
+8. Click "Tải về" and look at the saved file name
 
-After stripping diacritics, every character outside `A-Z a-z 0-9 -` is deleted. A word made only of non-Latin characters becomes an empty string and is filtered out, so `slug("李华")` returns `""`.
+**Expected:** the file name contains the bride's name, e.g. `thiep-cuoi-李华-Tran-Van-Duc.png`
+**Actual:** `thiep-cuoi--Tran-Van-Duc.png` (bride's name missing, double `-`)
 
-## Reproduce without the UI (fast)
-The bug lives in a pure function, so it reproduces in Node 22 with no install:
+Other inputs tried with the same steps:
 
-```bash
-git clone https://github.com/toinguyen-agilityio/super-board && cd super-board
-git checkout staging
-cat > run.ts <<'TS'
-import { invitationFileName } from "./lib/download.ts";
-for (const [b, g] of [["李华", "Trần Văn Đức"], ["김민지", "Park Ji-hoon"], ["😀", "🎉"], ["Nguyễn Thị Hằng", "Trần Văn Đức"]])
-  console.log(JSON.stringify([b, g]), "->", invitationFileName(b, g));
-TS
-node --experimental-strip-types run.ts && rm run.ts
-```
+| Tên cô dâu | Tên chú rể | Saved file name | Result |
+|---|---|---|---|
+| `李华` | `Trần Văn Đức` | `thiep-cuoi--Tran-Van-Duc.png` | ❌ bride missing |
+| `김민지` | `Park Ji-hoon` | `thiep-cuoi--Park-Ji-hoon.png` | ❌ bride missing |
+| `😀` | `🎉` | `thiep-cuoi--.png` | ❌ both missing |
+| `Nguyễn Thị Hằng` | `Trần Văn Đức` | `thiep-cuoi-Nguyen-Thi-Hang-Tran-Van-Duc.png` | ✅ OK |
 
-Output (run on 13/10/2026):
-
-```text
-["李华","Trần Văn Đức"] -> thiep-cuoi--Tran-Van-Duc.png
-["김민지","Park Ji-hoon"] -> thiep-cuoi--Park-Ji-hoon.png
-["😀","🎉"] -> thiep-cuoi--.png
-["Nguyễn Thị Hằng","Trần Văn Đức"] -> thiep-cuoi-Nguyen-Thi-Hang-Tran-Van-Duc.png
-```
-
-The last line is the happy path from the existing test, which still passes. The current tests in `lib/download.test.ts` only cover Vietnamese names and ASCII punctuation, so they never hit this case.
-
-## Failing test (to add before the fix)
-
-```ts
-it("keeps names that have no Latin letters", () => {
-  expect(invitationFileName("李华", "Trần Văn Đức")).not.toContain("--");
-});
-```
-
-Run with `npm test -- lib/download.test.ts`: it should go red on `staging` today.
+Each row was run once in the browser. The PNG content itself is fine; only the file name is wrong.
 
 ## Fix
-Open question for the PO first: keep non-Latin letters in the file name (`thiep-cuoi-李华-...`), or fall back to a placeholder (`thiep-cuoi-co-dau-...`) when a name slugs to empty? Either way, `slug()` must never return an empty segment.
+Keep every name in the file name. Open question for the PO: keep non-Latin letters as typed (`thiep-cuoi-李华-...`) or fall back to a placeholder (`thiep-cuoi-co-dau-...`) when a name has no Latin letters? Likely cause: `slug()` in `lib/download.ts` deletes everything outside `[A-Za-z0-9-]`.
 
 ## Acceptance Criteria
-- [ ] `invitationFileName("李华", "Trần Văn Đức")` returns a name with no empty segment (no `--`)
-- [ ] A name made only of emoji or symbols still gives a non-empty segment
-- [ ] Existing cases keep passing: `Nguyễn Thị Hằng` → `Nguyen-Thi-Hang`, `Minh/Quân?` → `MinhQuan`
+- [ ] With bride `李华` and groom `Trần Văn Đức`, "Tải về" saves a file whose name has no empty part (no `--`)
+- [ ] A name made only of emoji or symbols still produces a non-empty part in the file name
+- [ ] Vietnamese names keep today's behaviour: `Nguyễn Thị Hằng` + `Trần Văn Đức` → `thiep-cuoi-Nguyen-Thi-Hang-Tran-Van-Duc.png`
 - [ ] Characters unsafe in file names (`/ \ : * ? " < > |`) are still removed
+- [ ] A unit test in `lib/download.test.ts` covers the non-Latin and emoji cases
 
 ## Risk
-🟢 **Low** · one pure function in `lib/download.ts`, covered by unit tests; only the download file name changes
+🟢 **Low** · only the download file name changes; the PNG content and the editor are untouched
 
 ## Blocked by
 - None.
