@@ -1,6 +1,8 @@
 # 🐛 [bug] download: PNG file name drops non-Latin names
 
-Bug found while analysing [super-board #4](https://github.com/toinguyen-agilityio/super-board/issues/4) (vague point Q1 in [issue-04.md](issue-04.md)). Written in super-board's ticket format (`docs/agents/issue-tracker.md`) so it can be filed as an issue there.
+Bug found while analysing [super-board #4](https://github.com/toinguyen-agilityio/super-board/issues/4) (vague point Q1 in [issue-04.md](issue-04.md)). Written in super-board's ticket format (`docs/agents/issue-tracker.md`).
+
+**Filed as:** https://github.com/toinguyen-agilityio/super-board/issues/11
 
 ## Problem
 When the bride's or groom's name has no Latin letters (Chinese, Korean, emoji…), the downloaded PNG loses that name: the file is called `thiep-cuoi--Tran-Van-Duc.png`. Guests and couples cannot tell whose invitation the file is, and a name made only of emoji gives `thiep-cuoi--.png`.
@@ -32,12 +34,12 @@ The bug lives in a pure function, so it reproduces in Node 22 with no install:
 ```bash
 git clone https://github.com/toinguyen-agilityio/super-board && cd super-board
 git checkout staging
-cat > /tmp/run.ts <<'TS'
+cat > run.ts <<'TS'
 import { invitationFileName } from "./lib/download.ts";
 for (const [b, g] of [["李华", "Trần Văn Đức"], ["김민지", "Park Ji-hoon"], ["😀", "🎉"], ["Nguyễn Thị Hằng", "Trần Văn Đức"]])
   console.log(JSON.stringify([b, g]), "->", invitationFileName(b, g));
 TS
-cp /tmp/run.ts ./run.ts && node --experimental-strip-types run.ts && rm run.ts
+node --experimental-strip-types run.ts && rm run.ts
 ```
 
 Output (run on 13/10/2026):

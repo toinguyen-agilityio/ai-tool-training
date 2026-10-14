@@ -26,7 +26,7 @@ Why closed tickets: they come with an answer key (code, tests, QA reports), so y
 
 | Bug | From | Status |
 |---|---|---|
-| [🐛 download: PNG file name drops non-Latin names](bug-filename-non-latin.md) | #4, Q1 | Reproduced, not filed yet |
+| [🐛 download: PNG file name drops non-Latin names](bug-filename-non-latin.md) | #4, Q1 | Reproduced, filed as [super-board #11](https://github.com/toinguyen-agilityio/super-board/issues/11) |
 
 ## Next (Day 2 remaining)
 
