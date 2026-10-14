@@ -14,6 +14,20 @@ Same format as a commit summary (see [commit.md](commit.md#format)):
 <type>(<optional scope>): <summary>
 ```
 
+## Before you open or edit a PR
+
+Your branch may be older than `main`, and then it does not have the latest
+template or conventions. Before you write a title or description:
+
+```sh
+git fetch origin main
+git show origin/main:.github/pull_request_template.md
+git show origin/main:docs/conventions/pull-request.md
+```
+
+Follow what `origin/main` says, not the copy on your branch. If your branch is
+behind `main`, merge `main` into it first (see [branch.md](branch.md#rules)).
+
 ## Description
 
 Fill in [`.github/pull_request_template.md`](../../.github/pull_request_template.md):
