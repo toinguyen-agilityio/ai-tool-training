@@ -20,3 +20,17 @@ On `/tao`, add a 5-field form (bride, groom, date and time, venue, message) with
 ## First step
 
 Ask the PO to settle the date format and timezone, the whitespace rule and how the 300 characters are counted, then write component tests for validation and the counter before building the preview.
+
+## Reproduce result (14/10, running app)
+
+Checked every acceptance criterion on `staging` @ `7a5094a` with `npm run dev` and Chromium (Playwright):
+
+| Acceptance criterion | Result |
+|---|---|
+| 5 labelled fields | ✅ |
+| Preview updates while typing | ✅ |
+| Vietnamese error on blur for empty required fields | ✅ also for names made only of spaces |
+| Lời mời capped at 300 with a counter | ❌ counts UTF-16 units: each emoji uses 2, decomposed Vietnamese up to 2 per letter; 150 emoji already show `Còn 0 ký tự` |
+| Side by side at ≥ 1024 px, stacked at 375 px | ✅ switches at 1024 px |
+
+Bug filed: [#15 🐛 editor: Lời mời counter counts each emoji as 2 characters](https://github.com/toinguyen-agilityio/super-board/issues/15). This is vague question 4 above showing up as a real bug.
