@@ -38,6 +38,8 @@ Key rules at a glance:
 - Branch: `<type>/<short-kebab-description>`.
 - Commit and PR title: `<type>(<scope>): <imperative summary>`.
 - Open a PR only when the user asks, and never merge your own PR.
+- Before opening or editing a PR, `git fetch origin main` and fill in the
+  template from `origin/main`, not from an older copy on your branch.
 - No "🤖 Generated with Claude Code" footer in PR descriptions.
 
 ## Adding training content
