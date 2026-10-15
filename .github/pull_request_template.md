@@ -1,3 +1,5 @@
+<!-- Rules and a full example: docs/conventions/pull-request.md#description -->
+
 ## Summary
 
 <!-- Why is this change needed? The problem or goal, 1–3 sentences. -->
