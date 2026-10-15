@@ -41,6 +41,34 @@ Fill in [`.github/pull_request_template.md`](../../.github/pull_request_template
 
 Write the title and description in English.
 
+### Example
+
+Reference: [PR #3](https://github.com/toinguyen-agilityio/ai-tool-training/pull/3).
+Note how Summary gives only the reason and Changes gives only the result:
+
+```markdown
+## Summary
+
+Day 2 (ticket analysis, reproduce and understand) produced notes and a bug
+report that only lived in chat. Keeping them in the repo lets me pick up from
+them on the next training day and shows the CP1 "reproduce + repro steps"
+evidence.
+
+## Changes
+
+- Add `day-02-ticket-analysis/` with one analysis file per super-board ticket
+  (#1–#4): what's asked, what's vague as PO questions, first step.
+- Add a bug write-up for non-Latin names in the PNG file name, with
+  screenshots in `evidence/`.
+- Link Day 2 from `README.md`.
+
+## How to review
+
+- Start with `day-02-ticket-analysis/README.md`, then
+  `bug-filename-non-latin.md`.
+- Squash-merge: older commits on this branch predate the commit conventions.
+```
+
 Do not add a tool signature or footer to the description, such as
 `🤖 Generated with [Claude Code](https://claude.com/claude-code)` or a
 session link. Remove it if your tooling adds one.
