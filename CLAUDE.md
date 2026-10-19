@@ -12,8 +12,7 @@ published artifacts, and small exercises, organized by training day.
   section with a bullet per deliverable (link + one-line description).
 - `docs/conventions/`: branch, commit, and pull request conventions.
 - `.github/pull_request_template.md`: PR body layout. Always fill it in.
-- `.claude/`: team skills (`skills/`) and slash commands (`commands/`) shared
-  through the repo.
+- `.claude/commands/`: team slash commands shared through the repo.
 
 There is no build, test, or lint tooling yet. If you add code, add the command to
 run it to this file.
